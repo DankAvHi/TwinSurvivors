@@ -1,0 +1,39 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Twin Survivors"
+run/main_scene="res://game.tscn"
+config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+
+[dotnet]
+
+project/assembly_name="Twin Survivors"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ai_assistant_hub/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg")
+
+[plugins]
+
+ai_assistant_hub/base_url="http://127.0.0.1:11434"
+ai_assistant_hub/llm_api="gemini_api"
+ai_assistant_hub/gemini_api_key="AIzaSyCKYJI5uafQu6TlR73AYpf2KltY-iqOkPQ"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

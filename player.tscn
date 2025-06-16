@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://b3rnw1yru28vm"]
+
+[ext_resource type="Script" path="res://Player.cs" id="1_27onw"]
+[ext_resource type="Texture2D" uid="uid://1x2584p3rwr3" path="res://Design/ClassicCroped.png" id="2_w05hd"]
+[ext_resource type="Texture2D" uid="uid://b1idl5b1ncv07" path="res://Design/ClassicCropedMirrored.png" id="3_ed384"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_14ym2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w05hd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ed384")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xcb4u"]
+radius = 140.0
+height = 340.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_27onw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_14ym2")
+frame_progress = 0.330142
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.2)
+scale = Vector2(0.2, 0.2)
+shape = SubResource("CapsuleShape2D_xcb4u")
