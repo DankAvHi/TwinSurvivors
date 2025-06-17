@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://comqxdiaalyld"]
+[gd_scene load_steps=7 format=3 uid="uid://comqxdiaalyld"]
 
-[ext_resource type="Script" path="res://Enemy.cs" id="1_dgtst"]
+[ext_resource type="Script" path="res://Enemy.gd" id="1_85c15"]
 [ext_resource type="Texture2D" uid="uid://cbud8ko465bg8" path="res://Design/Enemy.png" id="1_jcbmw"]
 [ext_resource type="Texture2D" uid="uid://c0oisl6p3nyrm" path="res://Design/EnemyMirrored.png" id="2_3cbe6"]
 
@@ -22,13 +22,26 @@ animations = [{
 radius = 23.0
 height = 82.0
 
-[node name="Enemy" type="CharacterBody2D"]
-script = ExtResource("1_dgtst")
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2fp1p"]
+radius = 26.0
+height = 88.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_85c15")
+attack_cooldown = 0.2
+
+[node name="Animation" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.04, 0.04)
 sprite_frames = SubResource("SpriteFrames_jfaqq")
 frame_progress = 0.275063
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_kt2g4")
+
+[node name="DamageZone" type="Area2D" parent="."]
+
+[node name="DamageZoneCollision" type="CollisionShape2D" parent="DamageZone"]
+shape = SubResource("CapsuleShape2D_2fp1p")
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+one_shot = true

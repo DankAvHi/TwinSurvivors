@@ -12,12 +12,12 @@ config_version=5
 
 config/name="Twin Survivors"
 run/main_scene="res://game.tscn"
-config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+DiscordRPCLoader="res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 
 [dotnet]
 
@@ -25,7 +25,7 @@ project/assembly_name="Twin Survivors"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ai_assistant_hub/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg")
+enabled=PackedStringArray("res://addons/ai_assistant_hub/plugin.cfg")
 
 [plugins]
 
@@ -37,3 +37,4 @@ ai_assistant_hub/gemini_api_key="AIzaSyCKYJI5uafQu6TlR73AYpf2KltY-iqOkPQ"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

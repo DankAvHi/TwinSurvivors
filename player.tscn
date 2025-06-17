@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b3rnw1yru28vm"]
 
-[ext_resource type="Script" path="res://Player.cs" id="1_27onw"]
+[ext_resource type="Script" path="res://Player.gd" id="1_lfwxp"]
 [ext_resource type="Texture2D" uid="uid://1x2584p3rwr3" path="res://Design/ClassicCroped.png" id="2_w05hd"]
 [ext_resource type="Texture2D" uid="uid://b1idl5b1ncv07" path="res://Design/ClassicCropedMirrored.png" id="3_ed384"]
 
@@ -23,7 +23,7 @@ radius = 140.0
 height = 340.0
 
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_27onw")
+script = ExtResource("1_lfwxp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
@@ -34,3 +34,9 @@ frame_progress = 0.330142
 position = Vector2(0, 0.2)
 scale = Vector2(0.2, 0.2)
 shape = SubResource("CapsuleShape2D_xcb4u")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -61.0
+offset_top = 30.0
+offset_right = 65.0
+offset_bottom = 64.0
