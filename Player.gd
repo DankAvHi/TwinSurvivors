@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@export var hqd_weapon_scene: PackedScene # Сюда перетащим сцену HQD.tscn
 const SPEED: float = 300.0
 @export var max_health: float = 100.0
 
@@ -27,6 +28,11 @@ func _ready() -> void:
 	if health_bar:
 		health_bar.max_value = max_health
 	self.current_health = max_health # Устанавливаем начальное здоровье через сеттер
+
+	# Создаем и добавляем оружие HQD
+	if hqd_weapon_scene:
+		var hqd_instance = hqd_weapon_scene.instantiate()
+		add_child(hqd_instance) # HQD будет двигаться вместе с игроком
 
 func take_damage(amount: float) -> void:
 	self.current_health -= amount # Уменьшаем здоровье через сеттер

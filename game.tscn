@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7fyu7gxynn45"]
+[gd_scene load_steps=4 format=3 uid="uid://c7fyu7gxynn45"]
 
 [ext_resource type="PackedScene" uid="uid://b3rnw1yru28vm" path="res://player.tscn" id="1_fuspq"]
 [ext_resource type="PackedScene" uid="uid://comqxdiaalyld" path="res://enemy.tscn" id="2_6rgrd"]
+[ext_resource type="Texture2D" uid="uid://3r08rw357vg8" path="res://Design/hqd.png" id="3_3aqen"]
 
 [node name="Game" type="Node2D"]
 
@@ -11,3 +12,13 @@ position = Vector2(588, 297)
 [node name="Enemy" parent="." instance=ExtResource("2_6rgrd")]
 position = Vector2(804, 275)
 player_node_path = NodePath("../Player")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 86.8317
+texture = ExtResource("3_3aqen")
+expand_mode = 5

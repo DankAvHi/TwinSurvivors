@@ -4,16 +4,31 @@ extends CharacterBody2D
 @export var player_node_path: NodePath
 @export var attack_damage: float = 10.0
 @export var attack_cooldown: float = 1.0 # Секунд между атаками
+@export var max_health: float = 100.0
+
+# Сигнал, который будет издан, когда враг умрет
+signal died
 
 var player: CharacterBody2D
 var animated_sprite: AnimatedSprite2D
 var damage_zone: Area2D
 var attack_cooldown_timer: Timer
+# var health_bar: ProgressBar # Убрали, так как полоска здоровья не нужна
 var can_attack: bool = true
 var _player_is_in_damage_zone: bool = false # Флаг нахождения игрока в зоне
+var _knockback_vector: Vector2 = Vector2.ZERO # Для хранения вектора отталкивания
+var _current_health: float # Приватная переменная для хранения здоровья
+
+var current_health: float:
+	get: return _current_health
+	set(value):
+		_current_health = clampf(value, 0.0, max_health)
+		if _current_health <= 0.0 and not is_queued_for_deletion():
+			_die()
 
 func _ready() -> void:
-	animated_sprite = $Animation as AnimatedSprite2D # Убедись, что узел называется AnimatedSprite2D
+	# В твоей сцене Enemy.tscn узел называется "Animation", так что эта строка верна
+	animated_sprite = $Animation as AnimatedSprite2D
 	if animated_sprite:
 		animated_sprite.play("default") # Предполагается, что "default" - анимация ожидания/появления
 	else:
@@ -22,6 +37,10 @@ func _ready() -> void:
 	# Находим узлы для атаки
 	damage_zone = $DamageZone as Area2D
 	attack_cooldown_timer = $AttackCooldownTimer as Timer
+	# health_bar = $HealthBar as ProgressBar # Убрали
+
+	# Устанавливаем начальное здоровье.
+	self.current_health = max_health
 
 	if not damage_zone:
 		printerr("Враг '", name, "': узел Area2D с именем 'DamageZone' не найден.")
@@ -62,10 +81,15 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = Vector2.ZERO
 
+	# Применяем отталкивание, если оно есть
+	if _knockback_vector != Vector2.ZERO:
+		velocity += _knockback_vector
+		_knockback_vector = Vector2.ZERO # Сбрасываем после применения
+
 	move_and_slide()
 
 func _on_DamageZone_body_entered(body: Node2D) -> void:
-	if body == player:
+	if body == player and is_instance_valid(player): # Добавим проверку на валидность игрока
 		_player_is_in_damage_zone = true
 
 func _on_DamageZone_body_exited(body: Node2D) -> void:
@@ -81,3 +105,27 @@ func _try_attack_player() -> void:
 		can_attack = false
 		attack_cooldown_timer.start()
 		print("Враг '", name, "' атаковал игрока. Перезарядка...")
+
+func take_damage(amount: float) -> void:
+	self.current_health -= amount
+	# print("Враг '", name, "' получил ", amount, " урона. Осталось здоровья: ", _current_health)
+	_show_damage_effect()
+
+func _die() -> void:
+	emit_signal("died")
+	# Здесь можно запустить анимацию смерти, создать эффекты и т.д.
+	# После анимации смерти нужно будет удалить врага:
+	queue_free()
+
+func apply_knockback(direction: Vector2, strength: float) -> void:
+	# Накапливаем вектор отталкивания, он применится в _physics_process
+	_knockback_vector += direction.normalized() * strength
+
+func _show_damage_effect() -> void:
+	if not animated_sprite:
+		return
+	var tween = create_tween()
+	# Делаем спрайт ярко-белым (эффект вспышки), затем возвращаем в норму
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(animated_sprite, "modulate", Color(2, 2, 2, 1), 0.1)
+	tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.1)
